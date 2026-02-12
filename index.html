@@ -150,6 +150,7 @@
         .card:nth-child(3) { animation-delay: 1.2s; }
         .card:nth-child(4) { animation-delay: 1.5s; }
         .card:nth-child(5) { animation-delay: 1.8s; }
+        .card:nth-child(6) { animation-delay: 2.1s; }
 
         .card::before {
             content: '';
@@ -391,6 +392,112 @@
             opacity: 0.7;
         }
 
+        /* Proposal Section */
+        .proposal-section {
+            text-align: center;
+            padding: 30px;
+            min-height: 400px;
+        }
+
+        .proposal-question {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--deep-rose);
+            margin-bottom: 50px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(255, 107, 157, 0.8), 0 0 60px rgba(255, 107, 157, 0.6);
+            }
+        }
+
+        .proposal-buttons {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            min-height: 80px;
+        }
+
+        .proposal-btn {
+            padding: 20px 50px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .yes-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.5);
+        }
+
+        .no-btn {
+            background: linear-gradient(135deg, #f44336, #da190b);
+            color: white;
+            position: absolute;
+            transition: all 0.2s ease;
+        }
+
+        .celebration {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .celebration.show {
+            display: block;
+            animation: celebration-appear 1s ease-out;
+        }
+
+        @keyframes celebration-appear {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .celebration h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--deep-rose);
+            margin-bottom: 30px;
+            animation: rainbow 3s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { color: var(--rose); }
+            33% { color: var(--gold); }
+            66% { color: var(--deep-rose); }
+            100% { color: var(--rose); }
+        }
+
+        .celebration p {
+            font-size: 1.5rem;
+            line-height: 2;
+            color: var(--charcoal);
+        }
+
         /* Footer */
         .footer {
             text-align: center;
@@ -440,6 +547,21 @@
 
             .music-player {
                 padding: 20px;
+            }
+
+            .proposal-question {
+                font-size: 2rem;
+            }
+
+            .proposal-btn {
+                padding: 15px 35px;
+                font-size: 1.4rem;
+            }
+
+            .proposal-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
             }
         }
     </style>
@@ -526,9 +648,31 @@
                 <p>
                     "நட்சத்திரங்கள் ஆயிரம் இருந்தாலும், என் வானத்தில் ஒரு நிலா மட்டுமே — அது நீ 💕"
                 <br>
-                                                                        I LOVE YOU PAAPPU😘
+                    I LOVE YOU PAAPPU😘
                 </br>
                 </p>
+            </div>
+        </div>
+
+        <!-- Proposal Section -->
+        <div class="card">
+            <div class="proposal-section">
+                <div id="proposalContent">
+                    <h2 class="proposal-question">💍 Will You Marry Me? 💍</h2>
+                    <div class="proposal-buttons">
+                        <button class="proposal-btn yes-btn" onclick="handleYes()">Yes! 💕</button>
+                        <button class="proposal-btn no-btn" id="noBtn" 
+                                onmouseover="moveNoButton()" 
+                                ontouchstart="moveNoButton()"
+                                onclick="moveNoButton()">No</button>
+                    </div>
+                </div>
+                <div class="celebration" id="celebration">
+                    <h3>🎉 SHE SAID YES! 🎉</h3>
+                    <p>I can't wait to spend forever with you, my love! 💍❤️</p>
+                    <p style="font-size: 4rem; margin: 30px 0;">💑💕✨</p>
+                    <p>You've made me the happiest person in the world!</p>
+                </div>
             </div>
         </div>
     </div>
@@ -571,6 +715,80 @@
             setTimeout(() => {
                 heart.remove();
             }, 3000);
+        }
+
+        // Marriage proposal functions
+        function moveNoButton() {
+            const noBtn = document.getElementById('noBtn');
+            const container = document.querySelector('.proposal-buttons');
+            const containerRect = container.getBoundingClientRect();
+            
+            // Get random position within the container
+            const maxX = containerRect.width - noBtn.offsetWidth - 40;
+            const maxY = 200;
+            
+            const randomX = Math.random() * maxX - (maxX / 2);
+            const randomY = Math.random() * maxY - 100;
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        function handleYes() {
+            const proposalContent = document.getElementById('proposalContent');
+            const celebration = document.getElementById('celebration');
+            
+            proposalContent.style.display = 'none';
+            celebration.classList.add('show');
+            
+            // Epic celebration with tons of hearts!
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 100);
+            }
+            
+            // Confetti effect
+            createConfetti();
+            
+            // Send WhatsApp message
+            setTimeout(() => {
+                const message = "YES! I SAID YES! 💍❤️ I can't wait to marry you! 💕";
+                const phoneNumber = "916383119699"; // Your WhatsApp number
+                const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappURL, '_blank');
+            }, 2000); // Wait 2 seconds for celebration, then open WhatsApp
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b9d', '#c44569', '#d4af37', '#ffeef3', '#fff5f7'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '-20px';
+                    confetti.style.zIndex = '1000';
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.transition = 'all 3s ease-out';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.style.top = window.innerHeight + 'px';
+                        confetti.style.transform = `translateX(${(Math.random() - 0.5) * 500}px) rotate(${Math.random() * 720}deg)`;
+                        confetti.style.opacity = '0';
+                    }, 100);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 30);
+            }
         }
 
         // Add interactive hover effects to photo placeholders
